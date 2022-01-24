@@ -4,7 +4,7 @@ import { getCurrentAuth } from '../helpers/auth';
 
 const useAuth = () => {
 	const dispatch = useDispatch();
-	const auth = useSelector(state => state.auth);
+	const auth = useSelector(state => state.authReducer.auth);
 	return {
 		auth: auth,
 		setData: () => dispatch(setDataOnLoad(getCurrentAuth()))

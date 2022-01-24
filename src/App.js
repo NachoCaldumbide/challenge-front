@@ -2,15 +2,19 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Navbar } from './containers';
 import { Home, Dashboard, Login, Register } from './pages';
 import useAuth from './hooks/useAuth';
-import { setDefaultUser } from './helpers/auth';
+import { getCurrentAuth, setDefaultUser } from './helpers/auth';
+import { setDataOnLoad } from './redux/actions/tasks';
+import { useDispatch } from 'react-redux';
 
 function App() {
+	const dispatch = useDispatch();
 	const { auth, setData } = useAuth();
 	if (!localStorage.users) {
 		setDefaultUser();
 	}
 	if (localStorage.auth && !auth.valid) {
 		setData();
+		dispatch(setDataOnLoad(getCurrentAuth().tasks));
 	}
 	return (
 		<BrowserRouter>

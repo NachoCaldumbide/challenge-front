@@ -31,7 +31,6 @@ export const setDataOnLoad = data => {
 };
 
 export const logout = () => {
-	localStorage.removeItem('auth');
 	return dispatch => {
 		dispatch({
 			type: LOGOUT

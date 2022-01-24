@@ -6,6 +6,7 @@ import { useState } from 'react';
 import colors from '../../helpers/colors';
 import { useDispatch } from 'react-redux';
 import { loginUser } from '../../redux/actions/auth';
+import { setDataOnLoad } from '../../redux/actions/tasks';
 import { handleUserLogin } from '../../helpers/auth';
 
 const loginColors = colors.form;
@@ -17,6 +18,7 @@ const LoginForm = () => {
 	const handleSubmit = async data => {
 		try {
 			const userData = await handleUserLogin(data);
+			dispatch(setDataOnLoad(userData.tasks));
 			dispatch(loginUser(userData));
 		} catch {
 			setCredentialsError(true);

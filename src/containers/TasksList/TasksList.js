@@ -1,30 +1,67 @@
 import { List, ListItem, ListItemText } from '../../components';
-import { Wrapper } from './styles';
-import { Checkbox } from '@mui/material';
+import { Wrapper, Title, AddTaskComponent, DeleteButton } from './styles';
+import { Checkbox, Typography } from '@mui/material';
+import { useState } from 'react';
+import { addTask, editTask, removeTask } from '../../redux/actions/tasks';
+import { useDispatch, useSelector } from 'react-redux';
+import { addTaskToLocalStorage, editTaskOnLocalStorage, removeTaskFromLocalStorage } from '../../helpers/tasks';
 
 const TasksListMenu = () => {
-	let data = [
-		{ completed: false, name: 'Ir al banco' },
-		{ completed: false, name: 'Hacer la tarea' },
-		{ completed: false, name: 'Ordenar la casa' }
-	];
+	const dispatch = useDispatch();
+	const tasks = useSelector(state => state.tasksReducer.tasks);
+	const [taskInputValue, setTaskInputValue] = useState('');
 
 	const handleCompletedTask = task => {
-		const index = data.findIndex(item => item.name === task);
-		data[index] = { ...data[index], completed: !data[index].completed };
+		editTaskOnLocalStorage(task);
+		dispatch(editTask(task));
+	};
+
+	const handleAddTask = e => {
+		e.preventDefault();
+		const task = {
+			name: taskInputValue,
+			completed: false
+		};
+		addTaskToLocalStorage(task);
+		dispatch(addTask(task));
+		setTaskInputValue('');
+	};
+
+	const handleDeleteTask = task => {
+		removeTaskFromLocalStorage(task);
+		dispatch(removeTask(task));
 	};
 
 	return (
 		<Wrapper>
+			<Title>Mis tareas</Title>
+			<AddTaskComponent
+				type="text"
+				value={taskInputValue}
+				onChange={e => setTaskInputValue(e.target.value)}
+				placeholder="Agregar tarea"
+				onSubmit={e => handleAddTask(e)}
+			/>
 			<List>
-				{data && data.map(task => (
-					<ListItem
-						key={task.name}
-					>
-						<Checkbox onClick={() => handleCompletedTask(task.name)} />
-						<ListItemText>{task.name}</ListItemText>
-					</ListItem>
-				))}
+				{
+					tasks && !!tasks.length ?
+						tasks.map(task => (
+							<ListItem
+								key={task.name}
+							>
+								<Checkbox
+									onClick={() => handleCompletedTask(task)}
+									checked={task.completed}
+								/>
+								<ListItemText>{task.name}</ListItemText>
+								{
+									task.completed &&
+									<DeleteButton onClick={() => handleDeleteTask(task)}>Borrar</DeleteButton>
+								}
+							</ListItem>
+						)) :
+						<Typography mt="10px">No tenés tareas registradas.</Typography>
+				}
 			</List>
 		</Wrapper>
 	);

@@ -3,7 +3,8 @@ import bcrypt from 'bcryptjs';
 export const setDefaultUser = async () => {
 	const defaultUser = {
 		name: 'default',
-		pass: await hashPassword('12345678')
+		pass: await hashPassword('12345678'),
+		tasks: []
 	};
 	localStorage.setItem('users', JSON.stringify([defaultUser]));
 };

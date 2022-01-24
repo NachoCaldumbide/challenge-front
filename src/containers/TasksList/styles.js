@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import styled from '@emotion/styled';
 
 export const Wrapper = styled(Box)`
@@ -7,4 +7,32 @@ export const Wrapper = styled(Box)`
     padding: 20px;
     border-radius: 10px;
     z-index: 0;
+    display: flex;
+    flex-direction: column;
+`;
+
+export const Title = styled(Typography)`
+	margin-bottom: 15px;
+	font-size: 25px;
+    align-self: center;
+`;
+
+const AddTaskInput = styled.input`
+    outline: none;
+    padding: 10px;
+    border-radius: 3px;
+    border: 1px solid black;
+    width: fill-available;
+`;
+
+export const AddTaskComponent = ({onSubmit, ...props}) => {
+	return(
+		<form onSubmit={onSubmit}>
+			<AddTaskInput {...props} />
+		</form>
+	);
+};
+
+export const DeleteButton = styled(Typography)`
+    cursor: pointer;
 `;
