@@ -4,6 +4,11 @@ import styled from '@emotion/styled';
 
 const Nav = styled(Toolbar)`
     justify-content: space-between;
+	@media (max-width: 480px) {
+		flex-direction: column;
+		padding: 10px;
+		gap: 5px;
+	}
 `;
 
 export const Wrapper = ({ children }) => {
