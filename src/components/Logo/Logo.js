@@ -1,16 +1,19 @@
-import { Typography } from '@mui/material';
-import { Link } from 'react-router-dom';
+import LogoAntorcha from '../../assets/images/logo_antorcha.png';
+import { Wrapper, Link, TextLogo, ImageWrapper } from './styles';
 
 const Logo = () => {
 	return (
-		<Link to="/">
-			<Typography
-				variant="h6"
-				noWrap
-				component="div"
-			>
-                ToDo App
-			</Typography>
+		<Link
+			href="https://www.antorchadigital.com/"
+			target="_blank"
+			rel="noreferrer"
+		>
+			<Wrapper>
+				<TextLogo component="h1" noWrap>
+					ToDo App for
+				</TextLogo>
+				<ImageWrapper component="img" src={LogoAntorcha} height="40px" />
+			</Wrapper>
 		</Link>
 	);
 };
