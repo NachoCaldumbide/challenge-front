@@ -1,5 +1,5 @@
 import MenuItem from '@mui/material/MenuItem';
-import SelectComponent from '@mui/material/Select';
+import { SelectComponent } from './styles';
 
 const Select = ({ value, onChange, children, ...props }) => {
 	return (
