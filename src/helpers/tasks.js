@@ -16,7 +16,7 @@ export const editTaskOnLocalStorage = async task => {
 		item => item.name === task.name ?
 			{ ...item, completed: !item.completed } :
 			item
-	)
+	);
 	localStorage.setItem('users', JSON.stringify(users));
 };
 
@@ -24,6 +24,6 @@ export const removeTaskFromLocalStorage = async task => {
 	const { name } = await getCurrentAuth();
 	const users = JSON.parse(localStorage.users);
 	const userIndex = users.findIndex(user => user.name === name);
-	users[userIndex].tasks = users[userIndex].tasks.filter(item => item.name !== task.name)
+	users[userIndex].tasks = users[userIndex].tasks.filter(item => item.name !== task.name);
 	localStorage.setItem('users', JSON.stringify(users));
 };

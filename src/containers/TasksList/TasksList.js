@@ -1,5 +1,5 @@
-import { List, ListItem, ListItemText } from '../../components';
-import { Wrapper, Title, AddTaskComponent, DeleteButton } from './styles';
+import { List, ListItem, ListItemText, Select, Option } from '../../components';
+import { Wrapper, Title, TextBox, DeleteButton } from './styles';
 import { Checkbox, Typography } from '@mui/material';
 import { useState } from 'react';
 import { addTask, editTask, removeTask } from '../../redux/actions/tasks';
@@ -10,6 +10,8 @@ const TasksListMenu = () => {
 	const dispatch = useDispatch();
 	const tasks = useSelector(state => state.tasksReducer.tasks);
 	const [taskInputValue, setTaskInputValue] = useState('');
+	const [filter, setFilter] = useState('todas');
+	const [searchValue, setSearchValue] = useState('');
 
 	const handleCompletedTask = task => {
 		editTaskOnLocalStorage(task);
@@ -27,6 +29,24 @@ const TasksListMenu = () => {
 		setTaskInputValue('');
 	};
 
+	const statusFilter = (task, filter) => {
+		return (
+			filter === 'todas' ||
+			filter === 'pendientes' && !task.completed ||
+			filter === 'completadas' && task.completed
+		);
+	};
+
+	const searchFilter = (task, searchValue) => {
+		return task.name.toLowerCase().includes(searchValue.toLowerCase());
+	};
+
+	const tasksFilter = (task, filter, searchValue) => {
+		return statusFilter(task, filter) && searchFilter(task, searchValue);
+	};
+
+	const filteredData = tasks.filter(task => tasksFilter(task, filter, searchValue));
+
 	const handleDeleteTask = task => {
 		removeTaskFromLocalStorage(task);
 		dispatch(removeTask(task));
@@ -35,17 +55,31 @@ const TasksListMenu = () => {
 	return (
 		<Wrapper>
 			<Title>Mis tareas</Title>
-			<AddTaskComponent
+			<TextBox
 				type="text"
 				value={taskInputValue}
 				onChange={e => setTaskInputValue(e.target.value)}
 				placeholder="Agregar tarea"
 				onSubmit={e => handleAddTask(e)}
 			/>
+			<TextBox
+				type="text"
+				value={searchValue}
+				onChange={e => setSearchValue(e.target.value)}
+				placeholder="Buscar tareas"
+			/>
+			<Select
+				value={filter}
+				onChange={e => setFilter(e.target.value)}
+			>
+				<Option value="todas">Todas</Option>
+				<Option value="pendientes">Pendientes</Option>
+				<Option value="completadas">Completadas</Option>
+			</Select>
 			<List>
 				{
-					tasks && !!tasks.length ?
-						tasks.map(task => (
+					tasks && !!tasks.length && filteredData.length ?
+						filteredData.map(task => (
 							<ListItem
 								key={task.name}
 							>

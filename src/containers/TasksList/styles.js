@@ -17,7 +17,7 @@ export const Title = styled(Typography)`
     align-self: center;
 `;
 
-const AddTaskInput = styled.input`
+const Input = styled.input`
     outline: none;
     padding: 10px;
     border-radius: 3px;
@@ -25,10 +25,10 @@ const AddTaskInput = styled.input`
     width: fill-available;
 `;
 
-export const AddTaskComponent = ({onSubmit, ...props}) => {
+export const TextBox = ({onSubmit, ...props}) => {
 	return(
 		<form onSubmit={onSubmit}>
-			<AddTaskInput {...props} />
+			<Input {...props} />
 		</form>
 	);
 };
